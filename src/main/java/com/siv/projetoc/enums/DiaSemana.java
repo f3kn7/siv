@@ -1,4 +1,4 @@
-package com.siv.projetoc.disponibilidade;
+package com.siv.projetoc.enums;
 
 public enum DiaSemana {
     SEGUNDA,

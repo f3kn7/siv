@@ -7,12 +7,13 @@ import lombok.Setter;
 @Entity // diz ao JPA que essa classe é uma tabela no banco
 @Getter // lombok gera todos os getters automaticamente
 @Setter // lombok gera todos os setters automaticamente
-@Inheritance(strategy = InheritanceType.JOINED) // herança JOINED — cria uma tabela por classe (usuario, voluntario, instituicao)
+@Inheritance(strategy = InheritanceType.JOINED) // herança JOINED - cria uma tabela por classe (usuario, voluntario, instituicao)
 @DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING) // coluna que identifica o tipo do usuario na tabela pai
 @Table(name = "usuario") // nome da tabela no banco
 public abstract class Usuario {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // banco gera o valor - AUTO_INCREMENT : cada insert o banco incrementa sozinho
+    @Column(name = "id_usuario")
     private Long idUsuario;
 
     private String login;

@@ -1,6 +1,6 @@
 package com.siv.projetoc.disponibilidade;
 
-import com.siv.projetoc.usuario.Voluntario;
+import com.siv.projetoc.enums.DiaSemana;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

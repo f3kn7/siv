@@ -11,9 +11,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@DiscriminatorValue("VOL") // quando tipo = "VOL" na tabela usuario, é um voluntario
+@DiscriminatorValue("VOL") // quando tipo = "VOL" na tabela usuario, é um voluntario - comportamento em runtime (como o JPA lê e escreve os dados)
 @Table(name = "voluntario")
-@PrimaryKeyJoinColumn(name = "fk_usuario") // nomeia manualmente a PK/FK da herança, não deixa o jpa criar automaticamente
+@PrimaryKeyJoinColumn(name = "fk_usuario") // nomeia manualmente a PK/FK da herança, não deixa o jpa criar automaticamente um*****
 public class Voluntario extends Usuario {
 
     private String cpf;
@@ -23,7 +23,7 @@ public class Voluntario extends Usuario {
 
     @ManyToMany
     @JoinTable(
-            name = "voluntario_habilidade", // nome da tabela intermediária
+            name = "voluntario_habilidade", // nome da tabela intermediária (relação N,N -> tabela própria)
             joinColumns = @JoinColumn(name = "fk_voluntario"), // FK para voluntario
             inverseJoinColumns = @JoinColumn(name = "fk_habilidade") // FK para habilidade
     )
