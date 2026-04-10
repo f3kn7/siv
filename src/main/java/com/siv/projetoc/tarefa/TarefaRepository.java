@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
-    // @Query obrigatório - id está na classe pai Usuario, Spring Data não resolve herança pelo nome do metodo
-    @Query("SELECT t FROM Tarefa t WHERE t.instituicao.id = :instituicaoId")
-    List<Tarefa> findByInstituicaoId(@Param("instituicaoId") Long instituicaoId);
+    // Derived Query (findByInstituicaoId) pode ocasionar problemas -> @Query obrigatório - id está na classe pai Usuario, Spring Data não resolve herança pelo nome do metodo
+    @Query("SELECT t FROM Tarefa t WHERE t.instituicao.id = :id")
+    List<Tarefa> findByInstituicaoId(@Param("id") Long id);
 
     @Query("SELECT t FROM Tarefa t WHERE t.cidade = :cidade AND t.status = :status")
     List<Tarefa> findAbertasPorCidade(@Param("cidade") String cidade, @Param("status")StatusTarefa status);

@@ -9,10 +9,10 @@ import java.util.List;
 @Repository
 public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade, Long> {
 
-    // @Query porque o id está na classe pai Usuario — Spring Data não resolve herança pelo nome do metodo
-    @Query("SELECT d FROM Disponibilidade d WHERE d.voluntario.id = :voluntarioId")
-    List<Disponibilidade> findByVoluntario(Long voluntarioId);
+    //Derived Query (findByVoluntarioId) pode dar problema -> @Query porque o id está na classe pai Usuario — Spring Data não resolve herança pelo nome do metodo
+    @Query("SELECT d FROM Disponibilidade d WHERE d.voluntario.id = :id")
+    List<Disponibilidade> findByVoluntario(Long id);
 
-    @Query("SELECT d FROM Disponibilidade d WHERE d.voluntario.id = :voluntarioId AND d.diaSemana = :diaSemana")
-    List<Disponibilidade> findByVoluntarioIdAndDiaSemana(Long voluntarioId, DiaSemana diaSemana);
+    @Query("SELECT d FROM Disponibilidade d WHERE d.voluntario.id = :id AND d.diaSemana = :diaSemana")
+    List<Disponibilidade> findByVoluntarioIdAndDiaSemana(Long id, DiaSemana diaSemana);
 }

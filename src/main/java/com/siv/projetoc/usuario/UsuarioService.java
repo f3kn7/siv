@@ -46,7 +46,7 @@ public class UsuarioService {
         return instituicaoRepository.findById(id).orElseThrow(() -> new RuntimeException("Instituição não encontrada"));
     }
 
-    public void deletarInstituicoe(Long id){
+    public void deletarInstituicao(Long id){
         instituicaoRepository.deleteById(id);
     }
 

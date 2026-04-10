@@ -5,8 +5,9 @@ import com.siv.projetoc.habilidade.Habilidade;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -27,5 +28,6 @@ public class Voluntario extends Usuario {
             joinColumns = @JoinColumn(name = "fk_voluntario"), // FK para voluntario
             inverseJoinColumns = @JoinColumn(name = "fk_habilidade") // FK para habilidade
     )
-    private List<Habilidade> habilidades = new ArrayList<>();
+    //melhoria, Set evita habilidades duplicadas (além da restrição por chaves no banco) e permite busca O(1) pelo equals/hashCode da Habilidade, ants com List era 0(n),  percorria toda a lista
+    private Set<Habilidade> habilidades = new HashSet<>();
 }

@@ -1,5 +1,6 @@
 package com.siv.projetoc.usuario;
 
+import com.siv.projetoc.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,14 +8,11 @@ import lombok.Setter;
 @Entity // diz ao JPA que essa classe é uma tabela no banco
 @Getter // lombok gera todos os getters automaticamente
 @Setter // lombok gera todos os setters automaticamente
-@Inheritance(strategy = InheritanceType.JOINED) // herança JOINED - cria uma tabela por classe (usuario, voluntario, instituicao)
+@Inheritance(strategy = InheritanceType.JOINED) // herança JOINED - cada classe tem sua tabela, filhas referenciam a pai via FK na PK (usuario, voluntario, instituicao)
 @DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING) // coluna que identifica o tipo do usuario na tabela pai
 @Table(name = "usuario") // nome da tabela no banco
-public abstract class Usuario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // banco gera o valor - AUTO_INCREMENT : cada insert o banco incrementa sozinho
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+@AttributeOverride(name = "id", column = @Column(name = "usuario_id"))
+public abstract class Usuario extends BaseEntity {
 
     private String login;
     private String senha;

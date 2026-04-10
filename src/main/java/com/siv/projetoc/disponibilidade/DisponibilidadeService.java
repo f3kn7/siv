@@ -14,12 +14,12 @@ public class DisponibilidadeService {
         this.repository = repository;
     }
 
-    public List<Disponibilidade> listarPorVoluntario(Long voluntarioId) {
-        return repository.findByVoluntario(voluntarioId);
+    public List<Disponibilidade> listarPorVoluntario(Long id) {
+        return repository.findByVoluntario(id);
     }
 
-    public List<Disponibilidade> listarPorVoluntarioEdia(Long voluntarioId, DiaSemana diaSemana) {
-        return repository.findByVoluntarioIdAndDiaSemana(voluntarioId, diaSemana);
+    public List<Disponibilidade> listarPorVoluntarioEdia(Long id, DiaSemana diaSemana) {
+        return repository.findByVoluntarioIdAndDiaSemana(id, diaSemana);
     }
 
     public Disponibilidade salvar(Disponibilidade disponibilidade) {

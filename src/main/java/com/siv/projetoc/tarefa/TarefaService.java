@@ -24,8 +24,8 @@ public class TarefaService {
         return tarefaRepository.save(tarefa);
     }
 
-    public List<Tarefa> listarPorInstituicao(Long InstituicaoId) {
-        return tarefaRepository.findByInstituicaoId(InstituicaoId);
+    public List<Tarefa> listarPorInstituicao(Long id) {
+        return tarefaRepository.findByInstituicaoId(id);
     }
 
     public Tarefa buscarPorId(Long id) {

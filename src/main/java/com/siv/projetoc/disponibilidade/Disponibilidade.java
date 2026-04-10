@@ -1,5 +1,6 @@
 package com.siv.projetoc.disponibilidade;
 
+import com.siv.projetoc.common.BaseEntity;
 import com.siv.projetoc.enums.DiaSemana;
 import com.siv.projetoc.usuario.Voluntario;
 import jakarta.persistence.*;
@@ -12,12 +13,8 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Table(name = "disponibilidade")
-public class Disponibilidade {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "nro_disp")
-    private long numero;
+@AttributeOverride(name = "id", column = @Column(name = "nro_disp"))
+public class Disponibilidade extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dia_semana")
