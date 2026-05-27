@@ -14,14 +14,16 @@ import lombok.Setter;
 @AttributeOverride(name = "id", column = @Column(name = "requisicao_habilidade_id"))
 public class RequisicaoHabilidade extends BaseEntity {
 
-    @Column(name ="qtd_habilidade", nullable = false)
+    @Column(name = "qtd_habilidade", nullable = false)
     private Integer quantidadeHabilidade;
 
-    @ManyToOne(optional = false) //Muitas requisições para uma habilidade (varias requisiçoes, mas não do mesmo tipo)
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //Muitas requisições para uma habilidade (varias requisiçoes, mas não do mesmo tipo)
     @JoinColumn(name = "fk_habilidade", nullable = false)
     private Habilidade habilidade; //entidade fraca - não existe sem habilidade
 
-    @ManyToOne(optional = false) //Muitas requisições para uma tarefa (varias requisiçoes, mas não do mesmo tipo)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) //Muitas requisições para uma tarefa (varias requisiçoes, mas não do mesmo tipo)
     @JoinColumn(name = "fk_tarefa", nullable = false)
     private Tarefa tarefa; //entidade fraca - não existe sem tarefa
 

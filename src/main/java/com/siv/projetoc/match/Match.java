@@ -21,7 +21,7 @@ public class Match extends BaseEntity {
     private Instant dataCriacao;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 15)
     private StatusMatch status;
 
     @ManyToOne(optional = false)
@@ -32,5 +32,9 @@ public class Match extends BaseEntity {
     @JoinColumn(name = "fk_requisicao_habilidade", nullable = false)
     private RequisicaoHabilidade requisicaoHabilidade;
 
+    public boolean isOcupado() {
 
+        return this.status == StatusMatch.PENDENTE || this.status == StatusMatch.CONFIRMADO;
+
+    }
 }

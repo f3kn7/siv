@@ -9,7 +9,7 @@ import java.util.List;
 public class test {
     /*
         // classe anônima
-        Animal bicho = new Animal() {  // <-- isto é uma classe =o
+        Animal bicho = new Animal() {
             public void fazerSom() {
                 System.out.println("Au");
             }
@@ -39,7 +39,6 @@ public class test {
                 .toList();
 
         resultado.forEach(t -> System.out.println(t.nome + " - " + t.horario));
-
 
     }
 }

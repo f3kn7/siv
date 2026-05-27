@@ -1,5 +1,6 @@
 package com.siv.projetoc.usuario;
 
+import com.siv.projetoc.habilidade.Habilidade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,5 +14,5 @@ public interface VoluntarioRepository extends JpaRepository<Voluntario, Long> {
     @Query("SELECT DISTINCT v FROM Voluntario v JOIN v.habilidades h WHERE v.cidade = :cidade AND h = :habilidade")
     List<Voluntario> findByCidadeAndHabilidade(
             @Param("cidade") String cidade,
-            @Param("habilidade") String habilidade);
+            @Param("habilidade") Habilidade habilidade);
 }

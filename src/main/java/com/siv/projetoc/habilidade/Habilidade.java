@@ -11,6 +11,7 @@ import lombok.Setter;
 @AttributeOverride(name = "id", column = @Column(name = "habilidade_id"))
 public class Habilidade extends BaseEntity {
 
+    @Column(nullable = true, unique = true, length = 50)
     private String nome;
 
 

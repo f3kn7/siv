@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface RequisicaoHabilidadeRepository extends JpaRepository<RequisicaoHabilidade, Long> {
 
-    @Query("SELECT r FROM RequisicaoHabilidade r WHERE r.tarefa.id = :id")
-    List<RequisicaoHabilidade> findByTarefaId(@Param("tarefaId") Long id);
+    @Query("SELECT r FROM RequisicaoHabilidade r WHERE r.tarefa.id = :requisicao_habilidade_id")
+    List<RequisicaoHabilidade> findByTarefaId(@Param("requisicao_habilidade_id") Long requisicao_habilidade_id);
 
 }
