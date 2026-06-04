@@ -2,10 +2,12 @@ package com.siv.projetoc.requisicaohabilidade;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class RequisicaoHabilidadeService {
 
     private final RequisicaoHabilidadeRepository requisicaoHabilidadeRepository;
@@ -14,6 +16,7 @@ public class RequisicaoHabilidadeService {
         this.requisicaoHabilidadeRepository = requisicaoHabilidadeRepository;
     }
 
+    @Transactional
     public RequisicaoHabilidade salvar(RequisicaoHabilidade requisicaoHabilidade) {
         return requisicaoHabilidadeRepository.save(requisicaoHabilidade);
     }

@@ -4,6 +4,7 @@ import com.siv.projetoc.disponibilidade.Disponibilidade;
 import com.siv.projetoc.disponibilidade.DisponibilidadeRepository;
 import com.siv.projetoc.disponibilidade.DisponibilidadeService;
 import com.siv.projetoc.enums.StatusMatch;
+import com.siv.projetoc.enums.StatusTarefa;
 import com.siv.projetoc.requisicaohabilidade.RequisicaoHabilidade;
 import com.siv.projetoc.requisicaohabilidade.RequisicaoHabilidadeService;
 import com.siv.projetoc.tarefa.Tarefa;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class MatchService {
 
     /*                          Critérios p/ o matching:
@@ -43,7 +45,7 @@ public class MatchService {
         this.disponibilidadeRepository = disponibilidadeRepository;
         this.disponibilidadeService = disponibilidadeService;
     }
-
+    @Transactional
     public void gerarMatchsPorTarefa(Long id) {
 
         Tarefa tarefa = tarefaService.buscarPorId(id);
@@ -92,7 +94,31 @@ public class MatchService {
     @Transactional
     public Match confirmar(Long matchId) {
 
-        Match match = matchRepository.findById(matchId).orElseThrow(() -> new RuntimeException("Match não encontrado!"));
+        Match match = buscarMatch(matchId);
+        validarVagaDisponivel(match);
+
+        match.setStatus(StatusMatch.CONFIRMADO);
+        Match salvo = matchRepository.save(match);
+
+        expirarPendentesEatualizarStatusTarefa(match);
+
+        return salvo;
+    }
+
+    @Transactional
+    public Match recusar(Long matchId) {
+        Match match = buscarMatch(matchId);
+        match.setStatus(StatusMatch.RECUSADO);
+        return matchRepository.save(match);
+    }
+
+    // MÉTODOS AUXILIARES PRIVADOS
+
+    private Match buscarMatch(Long matchId) {
+        return matchRepository.findById(matchId).orElseThrow(() -> new RuntimeException("Match não encontrado!"));
+    }
+
+    private void validarVagaDisponivel(Match match) {
 
         Long requisicaoId = match.getRequisicaoHabilidade().getId();
         int quantidadeNecessaria = match.getRequisicaoHabilidade().getQuantidadeHabilidade();
@@ -102,20 +128,43 @@ public class MatchService {
         if (jaConfirmados >= quantidadeNecessaria) {
             throw new RuntimeException("Vagas já preenchidas!");
         }
-        match.setStatus(StatusMatch.CONFIRMADO);
-        Match salvo = matchRepository.save(match);
 
-        if (jaConfirmados + 1 >= quantidadeNecessaria) {
-            matchRepository.expirarPendentesPorRequisicao(requisicaoId);
+    }
+
+    private void expirarPendentesEatualizarStatusTarefa(Match match) {
+
+        RequisicaoHabilidade requisicaoHabilidade = match.getRequisicaoHabilidade();
+        if (requisicaoCompleta(requisicaoHabilidade)) {
+            matchRepository.expirarPendentesPorRequisicao(requisicaoHabilidade.getId());
         }
-        return salvo;
+        Long tarefaId = requisicaoHabilidade.getTarefa().getId();
+        if (tarefaCompleta(tarefaId)) {
+            tarefaService.atualizarTarefa(tarefaId, StatusTarefa.EM_ANDAMENTO);
+        }
     }
 
-    public Match recusar(Long matchId) {
-        Match match = matchRepository.findById(matchId).orElseThrow(() -> new RuntimeException("Match não encontrado!"));
-        match.setStatus(StatusMatch.RECUSADO);
-        return matchRepository.save(match);
+    private boolean requisicaoCompleta(RequisicaoHabilidade requisicaoHabilidade) {
+        long confirmados = matchRepository.countByRequisicaoHabilidadeAndStatus(requisicaoHabilidade.getId(), StatusMatch.CONFIRMADO);
+        if (confirmados >= requisicaoHabilidade.getQuantidadeHabilidade()) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    public boolean tarefaCompleta(Long TarefaId) {
+
+        List<RequisicaoHabilidade> requisicoes = requisicaoHabilidadeService.listarPorTarefa(TarefaId);
+
+        for (RequisicaoHabilidade requisicao : requisicoes) {
+            if (!requisicaoCompleta(requisicao)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // CONSULTAS PARA O CONTROLLER
 
     public List<Match> listarConfirmadosPorRequisicaoHabilidade(Long requisicaoHabilidadeId) {
         return matchRepository.findByRequisicaoHabilidadeIdAndStatus(requisicaoHabilidadeId, StatusMatch.CONFIRMADO);

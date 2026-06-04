@@ -1,10 +1,12 @@
 package com.siv.projetoc.usuario;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class UsuarioService {
 
     private final VoluntarioRepository voluntarioRepository;
@@ -16,37 +18,41 @@ public class UsuarioService {
     }
 
     //CRUD #Voluntario ---------------------------------------------------
+    @Transactional
     public Voluntario salvarVoluntario(Voluntario voluntario) {
         return voluntarioRepository.save(voluntario);
     }
 
-    public List<Voluntario> listarVoluntarios(){
-        return  voluntarioRepository.findAll();
+    public List<Voluntario> listarVoluntarios() {
+        return voluntarioRepository.findAll();
     }
 
-    public Voluntario buscarVoluntarioPorId(Long id){
+    public Voluntario buscarVoluntarioPorId(Long id) {
         return voluntarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Voluntário não encontrado"));
     }
 
-    public void deletarVoluntario(Long id){
+    @Transactional
+    public void deletarVoluntario(Long id) {
         voluntarioRepository.deleteById(id);
     }
 
     //CRUD #Instituição -------------------------------------------------
+    @Transactional
     public Instituicao salvarInstituicoe(Instituicao instituicao) {
         return instituicaoRepository.save(instituicao);
     }
 
-    public List<Instituicao> listarInstituicoes(){
-        return  instituicaoRepository.findAll();
+    public List<Instituicao> listarInstituicoes() {
+        return instituicaoRepository.findAll();
     }
 
-    public Instituicao buscarInstituicoPorId( Long id) {
+    public Instituicao buscarInstituicoPorId(Long id) {
 
         return instituicaoRepository.findById(id).orElseThrow(() -> new RuntimeException("Instituição não encontrada"));
     }
 
-    public void deletarInstituicao(Long id){
+    @Transactional
+    public void deletarInstituicao(Long id) {
         instituicaoRepository.deleteById(id);
     }
 

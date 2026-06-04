@@ -2,10 +2,12 @@ package com.siv.projetoc.disponibilidade;
 
 import com.siv.projetoc.enums.DiaSemana;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class DisponibilidadeService {
 
     private final DisponibilidadeRepository repository;
@@ -22,6 +24,7 @@ public class DisponibilidadeService {
         return repository.findByVoluntarioIdAndDiaSemana(id, diaSemana);
     }
 
+    @Transactional
     public Disponibilidade salvar(Disponibilidade disponibilidade) {
         return repository.save(disponibilidade);
     }

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class TarefaService {
 
     private final TarefaRepository tarefaRepository;
@@ -23,7 +24,8 @@ public class TarefaService {
     private final HabilidadeRepository habilidadeRepository;
     private final RequisicaoHabilidadeRepository requisicaoHabilidadeRepository;
 
-    public TarefaService(TarefaRepository tarefaRepository, InstituicaoRepository instituicaoRepository, HabilidadeRepository habilidadeRepository, RequisicaoHabilidadeRepository requisicaoHabilidadeRepository) {
+    public TarefaService(TarefaRepository tarefaRepository, InstituicaoRepository instituicaoRepository, HabilidadeRepository habilidadeRepository,
+                         RequisicaoHabilidadeRepository requisicaoHabilidadeRepository) {
         this.tarefaRepository = tarefaRepository;
         this.instituicaoRepository = instituicaoRepository;
         this.habilidadeRepository = habilidadeRepository;
@@ -39,8 +41,14 @@ public class TarefaService {
     }
 
     public List<Tarefa> buscarAbertasPorCidade(String cidade) {
-
         return tarefaRepository.findAbertasPorCidade(cidade, StatusTarefa.ABERTA);
+    }
+
+    @Transactional
+    public void atualizarTarefa(Long id, StatusTarefa novoStatus) {
+        Tarefa tarefa = buscarPorId(id);
+        tarefa.setStatus(novoStatus);
+        tarefaRepository.save(tarefa);
     }
 
     @Transactional
