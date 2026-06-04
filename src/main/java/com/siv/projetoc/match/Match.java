@@ -21,7 +21,7 @@ public class Match extends BaseEntity {
     private Instant dataCriacao;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 30)
     private StatusMatch status;
 
     @ManyToOne(optional = false)

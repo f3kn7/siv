@@ -3,6 +3,7 @@ package com.siv.projetoc.match;
 
 import com.siv.projetoc.enums.StatusMatch;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,11 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     @Query("SELECT m FROM Match m WHERE m.disponibilidade.voluntario.id = :voluntarioId AND m.status = 'PENDENTE'")
     List<Match> findPendentesByVoluntario(@Param("voluntarioId") Long voluntarioId);
+
+    @Query("SELECT COUNT(m) FROM Match m WHERE m.requisicaoHabilidade.id = :reqId AND m.status = :status")
+    long countByRequisicaoHabilidadeAndStatus(@Param("reqId") Long requisicaoId, @Param("status") StatusMatch status);
+
+    @Modifying
+    @Query("UPDATE Match m SET m.status = 'EXPIRADO_JA_PREENCHIDO' WHERE m.requisicaoHabilidade.id = :reqId AND m.status = 'PENDENTE'")
+    void expirarPendentesPorRequisicao(@Param("reqId") Long reqId);
 }

@@ -12,6 +12,7 @@ import com.siv.projetoc.usuario.Voluntario;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -88,10 +89,26 @@ public class MatchService {
         }
     }
 
+    @Transactional
     public Match confirmar(Long matchId) {
+
         Match match = matchRepository.findById(matchId).orElseThrow(() -> new RuntimeException("Match não encontrado!"));
+
+        Long requisicaoId = match.getRequisicaoHabilidade().getId();
+        int quantidadeNecessaria = match.getRequisicaoHabilidade().getQuantidadeHabilidade();
+
+        long jaConfirmados = matchRepository.countByRequisicaoHabilidadeAndStatus(requisicaoId, StatusMatch.CONFIRMADO);
+
+        if (jaConfirmados >= quantidadeNecessaria) {
+            throw new RuntimeException("Vagas já preenchidas!");
+        }
         match.setStatus(StatusMatch.CONFIRMADO);
-        return matchRepository.save(match);
+        Match salvo = matchRepository.save(match);
+
+        if (jaConfirmados + 1 >= quantidadeNecessaria) {
+            matchRepository.expirarPendentesPorRequisicao(requisicaoId);
+        }
+        return salvo;
     }
 
     public Match recusar(Long matchId) {
@@ -106,6 +123,10 @@ public class MatchService {
 
     public List<Match> listarPorRequisicaoHabilidade(Long requisicaoHabilidadeId) {
         return matchRepository.findByRequisicaoHabilidadeId(requisicaoHabilidadeId);
+    }
+
+    public List<Match> listarPendentesDoVoluntario(Long voluntarioId) {
+        return matchRepository.findPendentesByVoluntario(voluntarioId);
     }
 
 }

@@ -9,7 +9,8 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter         // @UniqueConstraint: garante que a mesma habilidade não se repita na mesma tarefa
+@Setter
+// @UniqueConstraint: garante que a mesma habilidade não se repita na mesma tarefa
 @Table(name = "requisicao_habilidade", uniqueConstraints = @UniqueConstraint(name = "uk_tarefa_habilidade", columnNames = {"fk_tarefa", "fk_habilidade"}))
 @AttributeOverride(name = "id", column = @Column(name = "requisicao_habilidade_id"))
 public class RequisicaoHabilidade extends BaseEntity {
@@ -17,14 +18,12 @@ public class RequisicaoHabilidade extends BaseEntity {
     @Column(name = "qtd_habilidade", nullable = false)
     private Integer quantidadeHabilidade;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    //Muitas requisições para uma habilidade (varias requisiçoes, mas não do mesmo tipo)
-    @JoinColumn(name = "fk_habilidade", nullable = false)
-    private Habilidade habilidade; //entidade fraca - não existe sem habilidade
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) //Muitas requisições para uma habilidade (varias requisiçoes, mas não do mesmo tipo)
+    @JoinColumn(name = "fk_habilidade", nullable = false) //existencia dependente de habilidade
+    private Habilidade habilidade;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false) //Muitas requisições para uma tarefa (varias requisiçoes, mas não do mesmo tipo)
-    @JoinColumn(name = "fk_tarefa", nullable = false)
-    private Tarefa tarefa; //entidade fraca - não existe sem tarefa
+    @JoinColumn(name = "fk_tarefa", nullable = false) //existencia dependente de tarefa
+    private Tarefa tarefa;
 
 }

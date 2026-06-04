@@ -13,11 +13,10 @@ import java.util.List;
 public class MatchRestController {
 
     private final MatchService matchService;
-    private final MatchRepository matchRepository;
 
-    public MatchRestController(MatchService matchService, MatchRepository matchRepository) {
+    public MatchRestController(MatchService matchService) {
         this.matchService = matchService;
-        this.matchRepository = matchRepository;
+
     }
 
     @PutMapping("/{matchId}/confirmar")
@@ -34,7 +33,7 @@ public class MatchRestController {
 
     @GetMapping("/voluntario/{voluntarioId}/pendentes")
     public ResponseEntity<List<VoluntarioMatchDTO>> listaPendentes(@PathVariable Long voluntarioId) {
-        List<Match> matches = matchRepository.findPendentesByVoluntario(voluntarioId);
+        List<Match> matches = matchService.listarPendentesDoVoluntario(voluntarioId);
         List<VoluntarioMatchDTO> dtos = new ArrayList<>();
         for (Match match : matches) {
             VoluntarioMatchDTO dto = VoluntarioMatchDTO.factoryFrom(match);

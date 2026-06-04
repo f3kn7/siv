@@ -20,7 +20,7 @@ public class TarefaCriarDTO {
 
     @NotBlank(message = "Título é obrigatório")
     @Size(max = 100, message = "Título deve ter no máximo 100 caracteres")
-    private String titulo;
+    private String nome;
 
     @Size(max = 1000, message = "Descrição deve ter no máximo 1000 caracteres")
     private String descricao;
@@ -28,9 +28,6 @@ public class TarefaCriarDTO {
     @FutureOrPresent(message = "A data deve ser hoje ou no futuro")
     @NotNull(message = "Data é obrigatória")
     private LocalDate data;
-
-    @NotNull(message = "Dia da semana é obrigatório")
-    private DiaSemana diaSemana;
 
     @NotNull(message = "Horário de início é obrigatório")
     private LocalTime horarioInicio;

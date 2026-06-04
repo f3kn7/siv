@@ -62,12 +62,12 @@ public class Tarefa extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)   // Muitas tarefas para uma instituição - FK obrigatória
     @JoinColumn(name = "fk_instituicao", nullable = false) // cria a coluna FK na tabela tarefa apontando para instituicao
-    private Instituicao instituicao;          // entidade fraca->[tarefa] - não existe tarefa sem instituição
+    private Instituicao instituicao;                       // [Tarefa] -> entidade dependente de [Instituição] - não existe tarefa sem instituição (fk: nullable = false)
 
     // @OneToMany(mappedBy = "tarefa"): bidirecional - permite navegar de Tarefa para suas requisições diretamente (tarefa.getRequisicoes())   Tarefa (List) 1 ────────── 0..* RequisicaoHabilidade
     // só quando faz sentido navegar pelos dois lados - quando usa cascade — precisa do @OneToMany para funcionar - não precisa ir ao banco outra vez;
     @JsonIgnore
-    @OneToMany(mappedBy = "tarefa", cascade = CascadeType.ALL, orphanRemoval = true) // Tarefa tem MUITAS RequisicaoHabilidade → List
+    @OneToMany(mappedBy = "tarefa", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true) // Tarefa tem MUITAS RequisicaoHabilidade → List
     private List<RequisicaoHabilidade> requisicoes = new ArrayList<>();
 }
 
