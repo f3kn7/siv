@@ -69,6 +69,7 @@ public class Tarefa extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "tarefa", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true) // Tarefa tem MUITAS RequisicaoHabilidade → List
     private List<RequisicaoHabilidade> requisicoes = new ArrayList<>();
+
 }
 
 

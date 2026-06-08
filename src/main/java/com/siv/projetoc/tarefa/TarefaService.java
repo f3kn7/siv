@@ -60,8 +60,8 @@ public class TarefaService {
 
         tarefa.setNome(dto.getNome());
         tarefa.setDescricao(dto.getDescricao());
-        DiaSemana diaSemana = DiaSemana.fromDayOfWeek(dto.getData().getDayOfWeek()); // Derivação do dia da semana a partir da data (LocalDate -> DayOfWeek -> DiaSemana)
-        tarefa.setDiaSemana(diaSemana);
+        tarefa.setData(dto.getData());
+        tarefa.setDiaSemana(DiaSemana.fromDayOfWeek(dto.getData().getDayOfWeek())); // Derivação do dia da semana a partir da data (LocalDate -> DayOfWeek -> DiaSemana)
         tarefa.setHoraInicio(dto.getHorarioInicio());
         tarefa.setHoraFim(dto.getHorarioFim());
 

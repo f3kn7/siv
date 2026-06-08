@@ -128,7 +128,6 @@ public class MatchService {
         if (jaConfirmados >= quantidadeNecessaria) {
             throw new RuntimeException("Vagas já preenchidas!");
         }
-
     }
 
     private void expirarPendentesEatualizarStatusTarefa(Match match) {

@@ -25,6 +25,7 @@ public record VoluntarioMatchDTO(
                 .map(Habilidade::getNome)
                 .collect(Collectors.toList());
 
+
         return new VoluntarioMatchDTO(
                 match.getId(),
                 voluntario.getNome(),
