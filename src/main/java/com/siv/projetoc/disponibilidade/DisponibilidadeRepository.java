@@ -30,7 +30,7 @@ public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade
             "AND h = :habilidade " +
             "AND d.diaSemana = :diaSemana " +
             "AND d.horaInicio <= :horaInicio " +
-            "And d.horaFim >= :horaFim " +
+            "AND d.horaFim >= :horaFim " +
             "AND NOT EXISTS (SELECT 1 FROM Match m  " +
             "WHERE m.disponibilidade = d " +
             "AND m.status IN ('PENDENTE', 'CONFIRMADO')) ")

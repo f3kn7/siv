@@ -1,5 +1,6 @@
 package com.siv.projetoc.match;
 
+import com.siv.projetoc.match.dto.ChamadoDTO;
 import com.siv.projetoc.match.dto.VoluntarioMatchDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,9 +50,13 @@ public class MatchRestController {
     }
 
     @GetMapping("/listar/requisicao/{requisicaoId}")
-    public List<Match> listar(@PathVariable("requisicaoId") Long requisicaoId) {
+    public List<Match> listarPorRequisicao(@PathVariable("requisicaoId") Long requisicaoId) {
+        return matchService.listarPorRequisicaoHabilidade(requisicaoId); //sem DTO
+    }
 
-        return matchService.listarPorRequisicaoHabilidade(requisicaoId);
+    @GetMapping("/listar/tarefa/{tarefaId}")
+    public List<ChamadoDTO> listarPorTarefa(@PathVariable("tarefaId") Long tarefaId) {
+        return matchService.listarChamadosPorTarefa(tarefaId);
     }
 
 }

@@ -5,6 +5,7 @@ import com.siv.projetoc.disponibilidade.DisponibilidadeRepository;
 import com.siv.projetoc.disponibilidade.DisponibilidadeService;
 import com.siv.projetoc.enums.StatusMatch;
 import com.siv.projetoc.enums.StatusTarefa;
+import com.siv.projetoc.match.dto.ChamadoDTO;
 import com.siv.projetoc.requisicaohabilidade.RequisicaoHabilidade;
 import com.siv.projetoc.requisicaohabilidade.RequisicaoHabilidadeService;
 import com.siv.projetoc.tarefa.Tarefa;
@@ -37,6 +38,7 @@ public class MatchService {
     private final DisponibilidadeRepository disponibilidadeRepository;
     private final DisponibilidadeService disponibilidadeService;
 
+
     public MatchService(MatchRepository matchRepository, TarefaService tarefaService, RequisicaoHabilidadeService requisicaoHabilidadeService,
                         DisponibilidadeRepository disponibilidadeRepository, DisponibilidadeService disponibilidadeService) {
         this.matchRepository = matchRepository;
@@ -44,7 +46,9 @@ public class MatchService {
         this.requisicaoHabilidadeService = requisicaoHabilidadeService;
         this.disponibilidadeRepository = disponibilidadeRepository;
         this.disponibilidadeService = disponibilidadeService;
+
     }
+
     @Transactional
     public void gerarMatchsPorTarefa(Long id) {
 
@@ -95,6 +99,7 @@ public class MatchService {
     public Match confirmar(Long matchId) {
 
         Match match = buscarMatch(matchId);
+
         validarVagaDisponivel(match);
 
         match.setStatus(StatusMatch.CONFIRMADO);
@@ -171,6 +176,12 @@ public class MatchService {
 
     public List<Match> listarPorRequisicaoHabilidade(Long requisicaoHabilidadeId) {
         return matchRepository.findByRequisicaoHabilidadeId(requisicaoHabilidadeId);
+    }
+
+    public List<ChamadoDTO> listarChamadosPorTarefa(Long tarefaId) {
+        return matchRepository.buscarPorTarefa(tarefaId).stream()
+                .map(ChamadoDTO::factoryFrom)
+                .toList();
     }
 
     public List<Match> listarPendentesDoVoluntario(Long voluntarioId) {

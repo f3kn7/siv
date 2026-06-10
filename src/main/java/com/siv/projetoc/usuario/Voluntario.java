@@ -12,7 +12,6 @@ import java.util.Set;
 
 @Entity
 @Getter
-@Setter
 @DiscriminatorValue("VOL") // quando tipo = "VOL" na tabela usuario, é um voluntario
 @Table(name = "voluntario")
 @PrimaryKeyJoinColumn(name = "fk_usuario") // nomeia manualmente a PK/FK da herança, não deixa o jpa criar automaticamente um*****
@@ -31,6 +30,8 @@ public class Voluntario extends Usuario {
             joinColumns = @JoinColumn(name = "fk_voluntario"), // FK para voluntario
             inverseJoinColumns = @JoinColumn(name = "fk_habilidade") // FK para habilidade
     )
-    //melhoria, Set evita habilidades duplicadas (além da restrição por chaves no banco) e permite busca O(1) pelo equals/hashCode da Habilidade, ants com List era 0(n),  percorria toda a lista
+    //Set evita habilidades duplicadas
     private Set<Habilidade> habilidades = new HashSet<>();
+
+
 }

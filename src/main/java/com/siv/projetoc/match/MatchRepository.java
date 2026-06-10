@@ -31,4 +31,7 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Modifying
     @Query("UPDATE Match m SET m.status = 'EXPIRADO_JA_PREENCHIDO' WHERE m.requisicaoHabilidade.id = :reqId AND m.status = 'PENDENTE'")
     void expirarPendentesPorRequisicao(@Param("reqId") Long reqId);
+
+    @Query("SELECT m FROM Match m WHERE m.requisicaoHabilidade.tarefa.id = :tarefaId")
+    List<Match> buscarPorTarefa(@Param("tarefaId") Long tarefaId);
 }
